@@ -20,9 +20,15 @@ export class AuthService {
         }
 
         // ** Hashage Mot de passe
-        const hashedPassword = bcrypt.hash(password,10);
+        const hashedPassword = await bcrypt.hash(password,10);
 
+        // ** Crée l'utilisateur et le sauvegarde
+        const newUser = this.userRepo.create({
+            email,
+            password: hashedPassword
+        });
 
+        return this.userRepo.save(newUser);
 
     }
 }
