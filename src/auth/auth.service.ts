@@ -53,7 +53,9 @@ export class AuthService {
             throw new UnauthorizedException("L'email ou le mot de passe est incorrect.")
         }
 
-        
+        return {
+            message: 'Succès !'
+        }
 
      }
 
