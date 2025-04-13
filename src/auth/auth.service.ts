@@ -5,12 +5,13 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { SignupDto } from './dtos/signup.dto';
 import { LoginDto } from './dtos/login.dto';
-
+import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class AuthService {
     constructor(
         @InjectRepository(User) // ** On injecte le repo, pas l'entité
         private readonly userRepo: Repository<User>,
+        private readonly jwtService: JwtService
     ) {}
 
     // ** Inscription
@@ -56,7 +57,17 @@ export class AuthService {
         return {
             message: 'Succès !'
         }
+     }
 
+
+    // ** Géneration du token JWT
+     async generateUserTokens(userId)
+     {
+         const accessToken = this.jwtService.sign({userId}, {expiresIn: '1H'})
+
+         return {
+            accessToken
+         }
      }
 
 }
