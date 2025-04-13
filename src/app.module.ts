@@ -9,10 +9,11 @@ import { User } from './auth/entity/user.entity';
   imports: [
     TypeOrmModule.forRoot({
       type: 'sqlite',
-      database: 'db.sqlite',
-      entities: [__dirname + '/**/*.entity.{ts,js}'],
+      database: 'database.sqlite',
+      entities: [User],
       synchronize: true, // ! Ne pas utiliser en PROD, auto-sync les changements
     })
+    , AuthModule // Import du module d'authentification
   ],
   controllers: [AppController],
   providers: [AppService],
