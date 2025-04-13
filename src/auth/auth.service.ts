@@ -44,7 +44,7 @@ export class AuthService {
         // Verification Email
         const user = await this.userRepo.findOneBy({email});
         if(!user) {
-            throw new Error("Cette utilisateur n'éxiste pas.")
+            throw new Error("L'email ou le mot de passe est incorrect.")
         }
 
      }
