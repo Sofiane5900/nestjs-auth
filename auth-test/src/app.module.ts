@@ -10,7 +10,7 @@ import { User } from './auth/entity/user.entity';
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'db.sqlite',
-      entities: [User], // ? Peut étre ajouter le directory "entity" directement ? 
+      entities: [__dirname + '/**/*.entity.{ts,js}'],
       synchronize: true, // ! Ne pas utiliser en PROD, auto-sync les changements
     })
   ],
