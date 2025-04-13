@@ -1,3 +1,9 @@
+/**
+ * Module principal de l'application NestJS
+ * @module AppModule
+ * @description Module racine qui configure les dépendances principales de l'application
+ */
+
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -8,6 +14,14 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import config from './config/config';
 
+/**
+ * @class AppModule
+ * @description Module principal qui configure :
+ * - La configuration globale de l'application
+ * - Le module JWT pour l'authentification
+ * - La connexion à la base de données SQLite
+ * - Le module d'authentification
+ */
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -18,7 +32,7 @@ import config from './config/config';
     JwtModule.registerAsync({
       imports: [ConfigModule],
       useFactory: async (config) => ({
-        secret: config.get('jwt.secret')
+        secret: config.get('jwt.secret'),
       }),
       global: true,
       inject: [ConfigService]
@@ -27,9 +41,9 @@ import config from './config/config';
       type: 'sqlite',
       database: 'database.sqlite',
       entities: [User],
-      synchronize: true, // ! Ne pas utiliser en PROD, auto-sync les changements
-    })
-    , AuthModule // Import du module d'authentification
+      synchronize: true, // ! Ne pas utiliser en PROD, auto-sync les changements de la DB
+    }),
+    AuthModule // Import du module d'authentification
   ],
   controllers: [AppController],
   providers: [AppService],
