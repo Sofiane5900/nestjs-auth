@@ -9,7 +9,7 @@ export class AuthController {
   //TODO: POST Signup 
   @Post('signup') // auth/signup
   async signUp(@Body() signupData: SignupDto) {
-    
+    return this.authService.signUp(signupData);
   }
 
 
