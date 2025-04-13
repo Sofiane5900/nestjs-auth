@@ -3,8 +3,6 @@
 /node_modules
 /build
 
-# Typedoc output
-docs/
 
 # base de données
 database.sqlite
