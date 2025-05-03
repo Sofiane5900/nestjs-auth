@@ -13,6 +13,7 @@ import { User } from './auth/entity/user.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import config from './config/config';
+import { RefreshToken } from './auth/entity/refresh-token.entity';
 
 /**
  * @class AppModule
@@ -39,8 +40,8 @@ import config from './config/config';
     }),
     TypeOrmModule.forRoot({
       type: 'sqlite',
-      database: 'database.sqlite',
-      entities: [User],
+      database: 'db.sqlite',
+      entities: [User, RefreshToken],
       synchronize: true, // ! Ne pas utiliser en PROD, auto-sync les changements de la DB
     }),
     AuthModule // Import du module d'authentification
