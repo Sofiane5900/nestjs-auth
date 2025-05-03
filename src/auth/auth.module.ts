@@ -9,6 +9,7 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entity/user.entity';
+import { RefreshToken } from './entity/refresh-token.entity';
 
 /**
  * @class AuthModule
@@ -18,7 +19,10 @@ import { User } from './entity/user.entity';
  * - Le service d'authentification
  */
 @Module({
-  imports: [TypeOrmModule.forFeature([User])], // injection du repo user 
+  imports: [TypeOrmModule.forFeature([
+    User,
+    RefreshToken
+  ]),],
   controllers: [AuthController],
   providers: [AuthService],
 })
