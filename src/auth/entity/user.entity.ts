@@ -4,7 +4,8 @@
  * @description Représente un utilisateur dans la base de données
  */
 
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { RefreshToken } from './refresh-token.entity';
 
 /**
  * @class User
@@ -33,4 +34,7 @@ export class User {
      */
     @Column()
     password: string;
+
+    @OneToMany(() => RefreshToken, token => token.user)
+    refreshTokens: RefreshToken[];
 }
