@@ -34,7 +34,7 @@ export class AuthService {
     private readonly userRepo: Repository<User>,
     private readonly jwtService: JwtService,
     @InjectRepository(RefreshToken)
-    private readonly refreshTokenRepo: RefreshToken
+    private readonly refreshToken: RefreshToken
 
   ) {}
 
@@ -77,7 +77,7 @@ export class AuthService {
       );
     }
 
-    const passwordMatch = await argon.verify(password, user.password);
+    const passwordMatch = await argon.verify(user.password, password);
     if (!passwordMatch) {
       throw new UnauthorizedException(
         "L'email ou le mot de passe est incorrect.",
