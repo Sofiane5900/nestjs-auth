@@ -34,7 +34,7 @@ export class AuthService {
     private readonly userRepo: Repository<User>,
     private readonly jwtService: JwtService,
     @InjectRepository(RefreshToken)
-    private readonly refreshToken: RefreshToken
+    private readonly refreshTokenRepo: Repository<RefreshToken>
 
   ) {}
 
@@ -94,10 +94,15 @@ export class AuthService {
    */
   async generateUserTokens(userId) {
     const accessToken = this.jwtService.sign({ userId }, { expiresIn: '1h' });
-    const refreshTokenRepo = uuidv4()
+    const refreshToken = uuidv4()
     return {
       accessToken,
-      refreshTokenRepo
+      refreshToken
     };
+  }
+
+  async storeRefreshToken(token: string, userId: string)
+  {
+    await this.refreshTokenRepo.create({})
   }
 }
