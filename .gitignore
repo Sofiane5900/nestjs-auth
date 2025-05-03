@@ -6,6 +6,7 @@
 
 # base de données
 database.sqlite
+db.sqlite
 
 
 # Logs
