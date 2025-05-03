@@ -8,10 +8,12 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entity/user.entity';
 import { Repository } from 'typeorm';
-import * as bcrypt from 'bcrypt';
+import * as argon from 'argon2';
 import { SignupDto } from './dtos/signup.dto';
 import { LoginDto } from './dtos/login.dto';
 import { JwtService } from '@nestjs/jwt';
+import { RefreshToken } from './entity/refresh-token.entity';
+import { v4 as uuidv4 } from 'uuid';
 
 /**
  * @class AuthService
@@ -31,6 +33,8 @@ export class AuthService {
     @InjectRepository(User)
     private readonly userRepo: Repository<User>,
     private readonly jwtService: JwtService,
+    private readonly refreshToken: RefreshToken
+
   ) {}
 
   /**
@@ -46,7 +50,7 @@ export class AuthService {
       throw new Error('Email déjà utilisé');
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await argon.hash(password);
 
     const newUser = this.userRepo.create({
       email,
@@ -72,7 +76,7 @@ export class AuthService {
       );
     }
 
-    const passwordMatch = await bcrypt.compare(password, user.password);
+    const passwordMatch = await argon.verify(password, user.password);
     if (!passwordMatch) {
       throw new UnauthorizedException(
         "L'email ou le mot de passe est incorrect.",
@@ -89,9 +93,10 @@ export class AuthService {
    */
   async generateUserTokens(userId) {
     const accessToken = this.jwtService.sign({ userId }, { expiresIn: '1h' });
-
+    const refreshToken = uuidv4()
     return {
       accessToken,
+      refreshToken
     };
   }
 }
